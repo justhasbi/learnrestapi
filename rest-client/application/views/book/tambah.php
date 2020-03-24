@@ -17,14 +17,17 @@
                         
                         <div class="form-group">
                             <label for="jenis_buku">Jenis Buku</label>
-                            <select class="form-control" id="jenis_buku" name="jenis_buku">
+                            <input type="text" name="jenis_buku" class="form-control" id="jenis_buku">
+                            <small class="form-text text-danger"><?= form_error('jenis_buku'); ?></small>
+                            
+                            <!-- <select class="form-control" id="jenis_buku" name="jenis_buku">
                                 <option value="Novel">Novel</option>
                                 <option value="Biografi">Biografi</option>
                                 <option value="Sastra">Sastra</option>
                                 <option value="Religi">Religi</option>
                                 <option value="Komik">Komik</option>
                                 <option value="Tutorial">Tutorial</option>
-                            </select>
+                            </select> -->
                         </div>
 
                         <div class="form-group">

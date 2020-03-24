@@ -1,54 +1,80 @@
 <?php 
 
+use GuzzleHttp\Client;
+
 class Book_model extends CI_model {
     public function getAllBook()
     {
-        return $this->db->get('buku')->result_array();
-    }
+        // return $this->db->get('buku')->result_array();
+        $client = new Client();
 
-    public function tambahDataBuku()
-    {
-        $data = [
-            "judul_buku" => $this->input->post('judul_buku', true),
-            "jenis_buku" => $this->input->post('jenis_buku', true),
-            "nama_pengarang" => $this->input->post('nama_pengarang', true),
-            "jml_halaman" => $this->input->post('jml_halaman', true)
-        ];
-
-        $this->db->insert('buku', $data);
-    }
-
-    public function hapusDataBuku($id)
-    {
-        // $this->db->where('id', $id);
-        $this->db->delete('buku', ['id' => $id]);
+        $response = $client->request('GET', 'http://localhost/REST-CI/rest-server/index.php/api/book');
+        $result= json_decode($response->getBody()->getContents(), true);
+        return $result['data'];
     }
 
     public function getBookById($id)
     {
-        return $this->db->get_where('buku', ['id_buku' => $id])->row_array();
+        $client = new Client();
+
+        $response = $client->request('GET', 'http://localhost/REST-CI/rest-server/index.php/api/book', [
+            'query' => [
+                'id_buku' => $id
+            ]
+        ]);
+        
+        $result= json_decode($response->getBody()->getContents(), true);
+        return $result['data'][0];
+
+        // return $this->db->get_where('buku', ['id_buku' => $id])->row_array();
     }
 
-    public function ubahDataMahasiswa()
+    public function tambahDataBuku()
     {
-        $data = [
-            "judul_buku" => $this->input->post('judul_buku', true),
-            "jenis_buku" => $this->input->post('jenis_buku', true),
-            "nama_pengarang" => $this->input->post('nama_pengarang', true),
-            "jml_halaman" => $this->input->post('jml_halaman', true)
-        ];
+        $client = new Client();
+        $response = $client->request('POST', 'http://localhost/REST-CI/rest-server/index.php/api/book', [
+            'form_params' => [
+                "judul_buku"        => $this->input->post('judul_buku', true),
+                "jenis_buku"        => $this->input->post('jenis_buku', true),
+                "nama_pengarang"    => $this->input->post('nama_pengarang', true),
+                "jml_halaman"       => $this->input->post('jml_halaman', true)
+            ]
+        ]);
 
-        $this->db->where('id_buku', $this->input->post('id_buku'));
-        $this->db->update('buku', $data);
+        $result= json_decode($response->getBody()->getContents(), true);
+        return $result;
+
+        // $this->db->insert('buku', $data);
     }
 
-    public function cariDataBuku()
+    public function hapusDataBuku($id)
     {
-        $keyword = $this->input->post('keyword', true);
-        $this->db->like('judul_buku', $keyword);
-        $this->db->or_like('jenis_buku', $keyword);
-        $this->db->or_like('nama_pengarang', $keyword);
-        $this->db->or_like('jml_halaman', $keyword);
-        return $this->db->get('buku')->result_array();
+        $client = new Client();
+        // $this->db->delete('buku', ['id' => $id]);
+        $response = $client->request('DELETE', 'http://localhost/REST-CI/rest-server/index.php/api/book', [
+            'form_params' => [
+                'id_buku' => $id
+            ]
+        ]);
+
+        $result= json_decode($response->getBody()->getContents(), true);
+        return $result;
     }
+
+    public function ubahDataBuku()
+    {
+        $client = new Client();
+        $response = $client->request('PUT', 'http://localhost/REST-CI/rest-server/index.php/api/book', [
+            'form_params' => [
+                "judul_buku"        => $this->input->post('judul_buku', true),
+                "jenis_buku"        => $this->input->post('jenis_buku', true),
+                "nama_pengarang"    => $this->input->post('nama_pengarang', true),
+                "jml_halaman"       => $this->input->post('jml_halaman', true)
+            ]
+        ]);
+
+        $result= json_decode($response->getBody()->getContents(), true);
+        return $result;
+    }
+
 }

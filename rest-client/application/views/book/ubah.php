@@ -18,15 +18,8 @@
                         
                         <div class="form-group">
                             <label for="jenis_buku">Jenis Buku</label>
-                            <select class="form-control" id="jenis_buku" name="jenis_buku">
-                                <?php foreach( $jenis_buku as $jb ) : ?>
-                                    <?php if( $jb == $buku['jenis_buku'] ) : ?>
-                                        <option value="<?= $jb; ?>" selected><?= $jb; ?></option>
-                                    <?php else : ?>
-                                        <option value="<?= $jb; ?>"><?= $jb; ?></option>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="text" name="jenis_buku" class="form-control" id="jenis_buku" value="<?php $buku['jenis_buku'];?>">
+                            <small class="form-text text-danger"><?= form_error('jenis_buku'); ?></small>
                         </div>
 
                         <div class="form-group">

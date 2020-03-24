@@ -42,7 +42,7 @@ class Book extends CI_Controller
 
     public function hapus($id)
     {
-        $this->Mahasiswa_model->hapusDataBuku($id);
+        $this->Book_model->hapusDataBuku($id);
         $this->session->set_flashdata('flash', 'Dihapus');
         redirect('Book');
     }
@@ -60,14 +60,7 @@ class Book extends CI_Controller
     {
         $data['judul'] = 'Form Ubah Data Mahasiswa';
         $data['buku'] = $this->Book_model->getBookById($id);
-        $data['jenis_buku'] = [
-            'Novel', 
-            'Biografi', 
-            'Sastra', 
-            'Religi', 
-            'Komik',
-            'Tutorial'
-        ];
+        
 
         $this->form_validation->set_rules('judul_buku', 'Judul Buku', 'required');
         $this->form_validation->set_rules('jenis_buku', 'Jenis Buku', 'required');
